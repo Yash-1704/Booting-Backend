@@ -1,32 +1,18 @@
+import userModel from '../models/user.model.js'
+
 export async function register(req,res){
     const{email, phone, password} =  req.body;
 
-    let errors = []
+    const user = await userModel.create({
+        email, phone, password
+    })
 
-    if(!email){
-        errors.push({
-            field:email,
-            message:"Email is required"
-        })
-    }
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    if(!emailRegex.test(email)){
-        errors.push({
-            field:email
-        })
-    }
-    if(!phone){
-        errors.push({
-            field:phone,
-            message:"Phone Number is required"
-        })
-    }
-    if(!password){
-        errors.push({
-            field:passowrd,
-            message:"Password is required"
-        })
-    }
-
-
+    res.status(201).json({
+        message: "User Registered Successfully",
+        data:{
+            email,
+            phone,
+            id:user._id
+        }
+    })
 }
